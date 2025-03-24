@@ -29,5 +29,25 @@ namespace CustomMiddleware.Controllers
             })
             .ToArray();
         }
+
+        [HttpGet("Test1")]
+        public IActionResult Test1()
+        {
+            
+            var sampleProducts = new List<Product>();
+            for (int i = 1; i < 2000; i++)
+            {
+                sampleProducts.Add(new() { Id = i, Name = $"Ürün {i} ", Price = i * 100 });
+            }
+
+           
+            return Ok(sampleProducts);
+        }
+
+        [HttpGet("notfound")]
+        public IActionResult Test3()
+        {
+            return NotFound();
+        }
     }
 }

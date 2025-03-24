@@ -37,7 +37,7 @@ namespace CustomMiddleware.Middlewares
 
                 using var streamReader = new StreamReader(requestBodyStream);
                 requestBodyContent = await streamReader.ReadToEndAsync();
-                
+
                 //request body'sini tekrar okuyabilmek için stream'i başa alıyoruz
                 requestBodyStream.Seek(0, SeekOrigin.Begin);
                 //DİKKAT:
@@ -63,19 +63,79 @@ namespace CustomMiddleware.Middlewares
                 var elapsed = stopwatch.ElapsedMilliseconds;
                 var statusCode = context.Response.StatusCode;
 
-               LogApiMetrics(context, requestTime, elapsed, statusCode, requestBodyContent, _option.LogResponseBody ? requestBodyContent : null, responseBodyContent);
-               // context.Request.Body.
+                LogApiMetrics(context, requestTime, elapsed, statusCode, requestBodyContent, _option.LogResponseBody ? responseBodyContent : null);
+
+                if (elapsed > _option.SlowRequestsThresholds)
+                {
+                    _logger.LogWarning($"Yavaş API isteği: {context.Request.Path} - {elapsed} ms");
+
+                }
+                // context.Request.Body.
             }
             catch (Exception)
             {
+                stopwatch.Stop();
+                _logger.LogError($"API isteğinde bir hata oluştu: {context.Request.Path} - {stopwatch.ElapsedMilliseconds} ms");
 
                 throw;
             }
+            finally
+            {
+                context.Request.Body = originalBody;
+                context.Response.Body = originalResponseBody;
+            }
         }
 
-        private void LogApiMetrics(HttpContext context, DateTime requestTime, long elapsed, int statusCode, string requestBodyContent, string? requestBody, string? responseBody)
+        private void LogApiMetrics(HttpContext context,
+                                   DateTime requestTime,
+                                   long elapsed,
+                                   int statusCode,
+                                   string requestBodyContent = null,
+                                   string responseBody=null)
         {
-           
+            var metrics = new
+            {
+                RequestTime = requestTime,
+                Path = context.Request.Path,
+                Method = context.Request.Method,
+                StatusCode = statusCode,
+                ElapsedMs = elapsed,
+                UserAgent = context.Request.Headers.ContainsKey("User-Agent") ? context.Request.Headers["User-Agent"].ToString() : null,
+                RequestBody = _option.LogRequestBody ? TruncateIfNeeded(requestBodyContent) : null,
+                ResponseBody = TruncateIfNeeded(responseBody)
+            };
+
+            if (statusCode >= 500)
+            {
+                _logger.LogError($"API'de sunucu  hatası: {metrics.Path} [{metrics.Method}] - {metrics.StatusCode} - {metrics.ElapsedMs}");
+            }
+            else if (statusCode >= 400)
+            {
+                _logger.LogWarning($"API'de istemci hatası: {metrics.Path} [{metrics.Method}] - {metrics.StatusCode} - {metrics.ElapsedMs}");
+            }
+            else if (elapsed > _option.SlowRequestsThresholds)
+            {
+                _logger.LogWarning($"Yavaş api isteği: {metrics.Path} [{metrics.Method}] - {metrics.StatusCode} - {metrics.ElapsedMs}");
+            }
+            else
+            {
+
+                _logger.LogInformation($"API isteği: {metrics.Path} [{metrics.Method}] - {metrics.StatusCode} - {metrics.ElapsedMs}");
+                _logger.LogInformation($"API yanıtı: {metrics.ResponseBody}");
+            }
+
+
+        }
+
+        string TruncateIfNeeded(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return value;
+            }
+
+            return value.Length <= _option.MaxLogLength ? value : value.Substring(0, _option.MaxLogLength)+"...";
+
         }
     }
 }
