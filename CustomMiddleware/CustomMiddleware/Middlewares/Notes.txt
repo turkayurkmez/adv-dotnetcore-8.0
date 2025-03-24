@@ -1,0 +1,7 @@
+﻿Bir API'de izleme ve performans ölçümü yapmak istiyoruz. 
+Aşamalar
+1. Performans metrikleri: Belirenen (süre, durum kodu vs) metrikleri toplar.
+2. Yavaş istek tespiti.
+3. İstek/yanıt içerik loglama.
+4. Koşullu kullanım.
+
