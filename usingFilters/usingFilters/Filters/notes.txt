@@ -1,0 +1,9 @@
+﻿Filter Türleri
+
+1. Authorization Filters
+2. Action Filters
+3. Result Filters
+4. Exception Filters
+5. Resource Filters
+
+Sıralama: Authorization -> Resource -> Action -> Result -> Exception
