@@ -5,6 +5,7 @@ using Catalog.Application;
 using MediatR;
 using Catalog.Application.Features.Products.Queries.GetAllProducts;
 using Catalog.Application.Features.Products.Queries.GetProductById;
+using Catalog.Application.Features.Products.Commands.CreateNewProduct;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,7 +46,17 @@ app.MapGet("/products/{id}", async (IMediator mediator, int id) =>
 {
     var query = new GetProductByIdQuery(id);
     var response = await mediator.Send(query);
+    if (response == null)
+    {
+        return Results.NotFound(new {message = $"{id} id'li ürün bulunamadı"});
+    }
     return Results.Ok(response);
+});
+
+app.MapPost("/products", async (IMediator mediator, CreateNewProductCommand command) =>
+{
+    var response = await mediator.Send(command);
+    return Results.Created($"/products/{response.Id}", response);
 });
 
 app.Run();

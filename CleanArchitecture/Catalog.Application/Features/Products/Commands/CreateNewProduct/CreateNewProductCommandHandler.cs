@@ -14,6 +14,13 @@ namespace Catalog.Application.Features.Products.Commands.CreateNewProduct
     {
         public async Task<CreateNewProductCommandResponse> Handle(CreateNewProductCommand request, CancellationToken cancellationToken)
         {
+            //validate request with FluentValidation:
+
+
+
+
+
+
             var product = request.Adapt<Product>();
            await productRepository.AddAsync(product);
             return new CreateNewProductCommandResponse(product.Id);
