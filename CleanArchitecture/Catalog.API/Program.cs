@@ -1,9 +1,24 @@
+﻿using Catalog.Infrastructure.DataContext;
+using Microsoft.EntityFrameworkCore;
+using Catalog.Infrastructure;
+using Catalog.Application;
+using MediatR;
+using Catalog.Application.Features.Products.Queries.GetAllProducts;
+using Catalog.Application.Features.Products.Queries.GetProductById;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+var connectionString = builder.Configuration.GetConnectionString("CatalogConnection");
+builder.Services.AddInfrastructure(connectionString);
+builder.Services.AddApplication();
+
+
+
 
 var app = builder.Build();
 
@@ -16,29 +31,22 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
 
-app.MapGet("/weatherforecast", () =>
+//minimal api'de, Controller yok. Dolayısıyla action da yok ve bundan dolayı Filter da yok.
+app.MapGet("/products", async (IMediator mediator) =>
 {
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+    var query = new GetAllProductsQuery();
+    var response = await mediator.Send(query);
+    return Results.Ok(response);
+
+});
+
+app.MapGet("/products/{id}", async (IMediator mediator, int id) =>
+{
+    var query = new GetProductByIdQuery(id);
+    var response = await mediator.Send(query);
+    return Results.Ok(response);
+});
 
 app.Run();
 
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

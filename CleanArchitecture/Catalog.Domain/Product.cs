@@ -20,6 +20,7 @@ namespace Catalog.Domain
 
         public int? Stock { get; set; }
         public string? CampaignInfo { get; set; }
+        public string? ImageUrl { get; set; }
 
 
     }

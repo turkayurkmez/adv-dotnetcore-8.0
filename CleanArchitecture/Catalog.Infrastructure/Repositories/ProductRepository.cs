@@ -1,5 +1,7 @@
 ﻿using Catalog.Domain;
 using Catalog.Domain.Contracts;
+using Catalog.Infrastructure.DataContext;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,42 +10,47 @@ using System.Threading.Tasks;
 
 namespace Catalog.Infrastructure.Repositories
 {
-    public class ProductRepository : IProductRepository
+    public class ProductRepository(SampleCatalogDbContext dbContext) : IProductRepository
     {
 
-        public Task<Product> AddAsync(Product entity)
+        public async Task AddAsync(Product entity)
         {
-            throw new NotImplementedException();
+            await dbContext.Products.AddAsync(entity);
+            await dbContext.SaveChangesAsync();
         }
 
-        public Task<Product> DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var product = await dbContext.Products.FindAsync(id);
+            dbContext.Products.Remove(product);
+            await dbContext.SaveChangesAsync();
+
         }
 
-        public Task<IEnumerable<Product>> GetAllAsync()
+        public async Task<IEnumerable<Product>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await dbContext.Products.ToListAsync();
         }
 
-        public Task<Product> GetByIdAsync(int id)
+        public async Task<Product> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await dbContext.Products.FindAsync(id);
         }
 
-        public Task<IEnumerable<Product>> GetProductsByCategoryAsync(int categoryId)
+        public async Task<IEnumerable<Product>> GetProductsByCategoryAsync(int categoryId)
         {
-            throw new NotImplementedException();
+            return await dbContext.Products.Where(x => x.CategoryId == categoryId).ToListAsync();
         }
 
-        public Task<IEnumerable<Product>> GetProductsByNameAsync(string name)
+        public async Task<IEnumerable<Product>> GetProductsByNameAsync(string name)
         {
-            throw new NotImplementedException();
+            return await dbContext.Products.Where(x => x.Name.Contains(name)).ToListAsync();
         }
 
-        public Task<Product> UpdateAsync(Product entity)
+        public async Task UpdateAsync(Product entity)
         {
-            throw new NotImplementedException();
+            dbContext.Products.Update(entity);
+            await dbContext.SaveChangesAsync();
         }
     }
 }

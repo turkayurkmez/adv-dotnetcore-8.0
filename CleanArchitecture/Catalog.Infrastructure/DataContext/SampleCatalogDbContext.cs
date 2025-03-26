@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Catalog.Infrastructure.DataContext
 {
-    internal class SampleCatalogDbContext : DbContext
+    public class SampleCatalogDbContext : DbContext
     {
         public SampleCatalogDbContext(DbContextOptions<SampleCatalogDbContext> options) : base(options)
         {

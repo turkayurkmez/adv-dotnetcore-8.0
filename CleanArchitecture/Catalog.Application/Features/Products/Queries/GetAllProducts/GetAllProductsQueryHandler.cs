@@ -11,14 +11,14 @@ namespace Catalog.Application.Features.Products.Queries.GetAllProducts
 {
     public class GetAllProductsQueryHandler(IProductRepository productRepository) : IRequestHandler<GetAllProductsQuery, GetAllProductsQueryResponse>
     {
-        public Task<GetAllProductsQueryResponse> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
+        public async Task<GetAllProductsQueryResponse> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
         {
-            var products = productRepository.GetAllAsync().Result;
+            var products = await productRepository.GetAllAsync();
             var productsForGetAll = products.Adapt<IEnumerable<ProductForGetAll>>();
 
             var response = new GetAllProductsQueryResponse(Products: productsForGetAll, Count: productsForGetAll.Count());
 
-            return Task.FromResult(response);
+            return response;
 
 
         }
