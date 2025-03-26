@@ -15,7 +15,7 @@ GET {{Catalog.API_HostAddress}}/products/{{id}}
 POST {{Catalog.API_HostAddress}}/products
 Content-Type: application/json
  {
-  "name": "Product 1",
+  "name": "",
   "description": "Product 1 description",
   "price": 100,
   "stock": 10

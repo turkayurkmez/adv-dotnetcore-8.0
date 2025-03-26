@@ -6,6 +6,7 @@ using MediatR;
 using Catalog.Application.Features.Products.Queries.GetAllProducts;
 using Catalog.Application.Features.Products.Queries.GetProductById;
 using Catalog.Application.Features.Products.Commands.CreateNewProduct;
+using System.ComponentModel.DataAnnotations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,8 +56,17 @@ app.MapGet("/products/{id}", async (IMediator mediator, int id) =>
 
 app.MapPost("/products", async (IMediator mediator, CreateNewProductCommand command) =>
 {
-    var response = await mediator.Send(command);
-    return Results.Created($"/products/{response.Id}", response);
+    try
+    {
+        var response = await mediator.Send(command);
+        return Results.Created($"/products/{response.Id}", response);
+    }
+    catch (Exception ex)
+    {
+
+       return Results.BadRequest(new { message = ex.Message });
+    }
+
 });
 
 app.Run();
