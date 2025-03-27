@@ -1,4 +1,4 @@
-using OptionsPattern.Models;
+﻿using OptionsPattern.Models;
 using OptionsPattern.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,7 +11,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+/*
+ * appsettings/json dosyayindaki veriyi EmailSettings nesnesine bind etmek ve bu nesneyi
+ * herhangi bir nesneye enjekte etmek için Configure metodu kullanılır.
+ * 
+ * Eğer sadece bind etmek isteseydim:
+ * builder.Configuration.GetSection("EmailSettings").Bind(new EmailSettings());
+   builder.Configuration.Get<EmailSettings>();
+ */
+
+
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+
 builder.Services.AddSingleton<MailService>();
 builder.Services.AddScoped<ConfigAwareService>();
 

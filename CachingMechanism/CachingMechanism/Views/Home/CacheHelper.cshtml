@@ -1,0 +1,13 @@
+﻿@model Employee
+@{
+    ViewData["Title"] = "CacheHelper";
+}
+
+<h1>CacheHelper</h1>
+
+<cache vary-by="@Model.Id" expires-after="@TimeSpan.FromMinutes(5)">
+    <p>Employee Name: @Model.Name</p>
+    <p>Employee Department: @Model.Department</p>
+    <p>Cache Time: @DateTime.Now</p>
+</cache>
+
