@@ -1,0 +1,29 @@
+﻿@model HomeIndexViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<ul>
+    @foreach (var item in Model.Products)
+    {
+        <li>@item</li>
+    }
+</ul>
+
+@* <nav aria-label="...">
+    <ul class="pagination pagination-lg">
+        @for (int i = 1; i <= Model.PagingInfo.PageCount; i++)
+        {
+            <li class="page-item"><a class="page-link" asp-controller="Home" asp-action="Index" asp-route-page="@i">@i</a></li>
+        }      
+      
+      
+    </ul>
+</nav> *@
+
+<div page-model="@Model.PagingInfo" page-action="Index"></div>
