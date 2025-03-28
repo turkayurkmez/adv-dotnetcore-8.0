@@ -1,0 +1,31 @@
+services:
+  ms-sql-server:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: "pa55W0rd"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+
+    healthcheck:
+       test: [ "CMD", "/opt/mssql-tools/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "pa55W0rd", "-Q", "SELECT 1" ]
+       interval: 10s
+       timeout: 5s
+       retries: 5
+  
+    
+
+  
+  dotnetwithdocker:
+    image: ${DOCKER_REGISTRY-}dotnetwithdocker
+    build:
+      context: .
+      dockerfile: dotnetWithDocker/Dockerfile
+    environment:
+      DefaultHost: "ms-sql-server"
+      DefaultPass: "pa55W0rd"
+    depends_on:
+      - ms-sql-server
+    
+
+

@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35728.132 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotnetWithDocker", "dotnetWithDocker\dotnetWithDocker.csproj", "{443920E4-0398-4120-B53A-22E9E34585D9}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{88139535-571D-4C99-9C2C-C0E5E9392981}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{443920E4-0398-4120-B53A-22E9E34585D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{443920E4-0398-4120-B53A-22E9E34585D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{443920E4-0398-4120-B53A-22E9E34585D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{443920E4-0398-4120-B53A-22E9E34585D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88139535-571D-4C99-9C2C-C0E5E9392981}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88139535-571D-4C99-9C2C-C0E5E9392981}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88139535-571D-4C99-9C2C-C0E5E9392981}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88139535-571D-4C99-9C2C-C0E5E9392981}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
