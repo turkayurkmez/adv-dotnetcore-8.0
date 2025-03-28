@@ -7,12 +7,16 @@ using System.Threading.Tasks;
 
 namespace Catalog.Application.Features.Products.Queries.GetAllProducts
 {
-    public  record GetAllProductsQuery() : IRequest<GetAllProductsQueryResponse>;
+    //public  record GetAllProductsQuery() : IRequest<GetAllProductsQueryResponse>;
+    public record GetAllProductsQuery() : IRequest<GetAllProductsQueryResponseWithIAsyncEnumerable>;
 
     public record GetAllProductsQueryResponse(IEnumerable<ProductForGetAll> Products, int Count);
-    
+    public record GetAllProductsQueryResponseWithIAsyncEnumerable(IEnumerable<ProductForGetAll> Products);
+
 
     public record ProductForGetAll(int Id, string Name, string? Description, decimal Price, int? CategoryId, int? Stock);
+
+
     //public record GetAllWithDetail (IEnumerable<ProductForGetAll> Products, int Count);
 
 }

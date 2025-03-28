@@ -23,3 +23,7 @@ Content-Type: application/json
 
 
 ###
+
+GET {{Catalog.API_HostAddress}}/products
+
+###

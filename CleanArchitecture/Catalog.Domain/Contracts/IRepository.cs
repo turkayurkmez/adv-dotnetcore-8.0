@@ -10,6 +10,7 @@ namespace Catalog.Domain.Contracts
     {
         Task<T> GetByIdAsync(int id);
         Task<IEnumerable<T>> GetAllAsync();
+        IAsyncEnumerable<T> GetAllAsyncEnumerable();
         Task AddAsync(T entity);
         Task UpdateAsync(T entity);
         Task DeleteAsync(int id);

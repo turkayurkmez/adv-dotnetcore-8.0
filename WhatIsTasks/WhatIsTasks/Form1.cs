@@ -26,18 +26,29 @@
 
         }
 
-        private async void buttonTask_Click(object sender, EventArgs e)
+        private  void buttonTask_Click(object sender, EventArgs e)
         {
-           await Task.Run(() =>
-            {
-                for (int i = 1; i <= 10000; i++)
-                {
-                    labelTask.Text = i.ToString();
-                    progressBar1.Value = i / 100;
-                }
-            });
+            //Task.Run(() =>
+            //{
+            //    for (int i = 1; i <= 10000; i++)
+            //    {
+            //        labelTask.Text = i.ToString();
+            //        progressBar1.Value = i / 100;
+            //    }
+            //});
+
+            Counter();
 
             MessageBox.Show("İşlem tamamlandı?");
+        }
+
+        void Counter()
+        {
+            for (int i = 1; i <= 100000; i++)
+            {
+                labelTask.Text = i.ToString();
+                progressBar1.Value = i / 1000;
+            }
         }
     }
 }

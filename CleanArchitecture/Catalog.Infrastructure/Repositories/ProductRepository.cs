@@ -32,6 +32,12 @@ namespace Catalog.Infrastructure.Repositories
             return await dbContext.Products.ToListAsync();
         }
 
+        public  IAsyncEnumerable<Product> GetAllAsyncEnumerable()
+        {
+            return  dbContext.Products.AsAsyncEnumerable();
+
+        }
+
         public async Task<Product> GetByIdAsync(int id)
         {
             return await dbContext.Products.FindAsync(id);
